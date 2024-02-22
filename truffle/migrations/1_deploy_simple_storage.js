@@ -1,5 +1,5 @@
-const SimpleStorage = artifacts.require('SimpleStorage');
+const ProductManager = artifacts.require('ProductManager');
 
 module.exports = function (deployer) {
-    deployer.deploy(SimpleStorage);
+    deployer.deploy(ProductManager);
 };
