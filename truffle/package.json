@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "description": "Truffle project with SimpleStorage contract",
     "scripts": {
+        "start:dev": "truffle develope",
         "test": "truffle test"
     },
     "dependencies": {
