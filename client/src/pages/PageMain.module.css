@@ -1,0 +1,41 @@
+.container {
+    width: 100%;
+    margin-top: 100px;
+    margin-left: 50px;
+    margin-right: 50px;
+    border: 1px solid black;
+    padding: 20px;
+}
+
+.container h1,
+h2 {
+    text-align: center;
+}
+
+.container hr {
+    margin: 20px auto;
+}
+
+.container .addingProductBody {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.container .addingProductBody input[type='text'] {
+    width: 100px;
+}
+
+.container .addingProductBody button {
+    border: 1px solid black;
+    border-radius: 16px;
+    padding: 5px 10px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.container .addingProductBody button:hover {
+    background-color: black;
+    color: white;
+}

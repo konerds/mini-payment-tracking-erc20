@@ -54,8 +54,8 @@ contract ProductManager is Ownable {
         );
         products[_productIndex]._state = SupplyChainState.Paid;
         emit SupplyChainStep(
-            productIndex,
-            uint(products[productIndex]._state),
+            _productIndex,
+            uint(products[_productIndex]._state),
             address(products[_productIndex]._product)
         );
     }
@@ -67,8 +67,8 @@ contract ProductManager is Ownable {
         );
         products[_productIndex]._state = SupplyChainState.Deivered;
         emit SupplyChainStep(
-            productIndex,
-            uint(products[productIndex]._state),
+            _productIndex,
+            uint(products[_productIndex]._state),
             address(products[_productIndex]._product)
         );
     }

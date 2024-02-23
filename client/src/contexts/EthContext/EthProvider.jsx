@@ -5,40 +5,50 @@ import { reducer, actions, initialState } from './state';
 
 function EthProvider({ children }) {
     const [state, dispatch] = useReducer(reducer, initialState);
-
-    const init = useCallback(async (artifact) => {
-        if (artifact) {
+    const init = useCallback(async (artifactProductManager, artifactProduct) => {
+        if (artifactProductManager && artifactProduct) {
             const web3 = new Web3(Web3.givenProvider || 'ws://localhost:8545');
             const accounts = await web3.eth.requestAccounts();
             const networkID = await web3.eth.net.getId();
-            const { abi } = artifact;
-            let address, contract;
+            const { abi: abiProductManager } = artifactProductManager;
+            let addressProductManager, contractProductManager;
             try {
-                address = artifact.networks[networkID].address;
-                contract = new web3.eth.Contract(abi, address);
+                addressProductManager = artifactProductManager.networks[networkID].address;
+                contractProductManager = new web3.eth.Contract(abiProductManager, addressProductManager);
+            } catch (err) {
+                console.error(err);
+            }
+            const { abi: abiProduct } = artifactProduct;
+            let addressProduct, contractProduct;
+            try {
+                addressProduct = artifactProduct.networks[networkID]?.address;
+                contractProduct = new web3.eth.Contract(abiProduct, addressProduct);
             } catch (err) {
                 console.error(err);
             }
             dispatch({
                 type: actions.init,
-                data: { artifact, web3, accounts, networkID, contract },
+                data: {
+                    isLoaded: true,
+                    web3,
+                    accounts,
+                    networkID,
+                    productManager: contractProductManager,
+                    product: contractProduct,
+                },
             });
         }
     }, []);
-
     useEffect(() => {
         const tryInit = async () => {
             try {
-                const artifact = require('../../contracts/SimpleStorage.json');
-                init(artifact);
+                init(require('../../contracts/ProductManager.json'), require('../../contracts/Product.json'));
             } catch (err) {
                 console.error(err);
             }
         };
-
         tryInit();
     }, [init]);
-
     useEffect(() => {
         const events = ['chainChanged', 'accountsChanged'];
         const handleChange = () => {
@@ -50,7 +60,6 @@ function EthProvider({ children }) {
             events.forEach((e) => window.ethereum.removeListener(e, handleChange));
         };
     }, [init, state.artifact]);
-
     return (
         <EthContext.Provider
             value={{
